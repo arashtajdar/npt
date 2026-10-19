@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheda Esame & Lezioni - Patente B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation / Mode Switcher -->
+  <header class="top-mode-bar">
+    <div class="mode-buttons">
+      <button class="btn-mode active" id="btnModeExam" onclick="setAppMode('exam')">
+        <span>📝</span>
+        <span>شبیه‌ساز رسمی آزمون (Scheda Esame)</span>
+      </button>
+      <button class="btn-mode" id="btnModeLessons" onclick="setAppMode('lessons')">
+        <span>📚</span>
+        <span>درسنامه فشرده و کنکوری (۱۵ درس)</span>
+      </button>
+    </div>
+    <div class="brand-tag">
+      🚗 گواهینامه رانندگی ایتالیا (Patente B)
+    </div>
+  </header>
+
+  <!-- ========================================================
+       SECTION 1: EXAM SIMULATOR
+       ======================================================== -->
+  <main class="terminal-container" id="examSimulatorSection">
+    <!-- Header: Ministry info, Scheda Esame, Fac-Simile, DT -->
+    <header class="header-bar">
+      <div class="ministry-block">
+        <svg class="emblem-svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="#f4f7f5" stroke="#718878" stroke-width="1.8"/>
+          <polygon points="50,14 59,38 84,38 64,53 71,77 50,62 29,77 36,53 16,38 41,38" fill="#889f8f" stroke="#486050" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="15" fill="#f4f7f5" stroke="#486050" stroke-width="3.5" stroke-dasharray="6,4"/>
+          <circle cx="50" cy="50" r="6" fill="#486050"/>
+          <path d="M 22,68 C 18,48 24,30 38,20" fill="none" stroke="#5d7564" stroke-width="2"/>
+          <path d="M 78,68 C 82,48 76,30 62,20" fill="none" stroke="#5d7564" stroke-width="2"/>
+        </svg>
+        <div class="ministry-text">
+          Ministero delle Infrastrutture<br>
+          e dei Trasporti<br>
+          <span>
+            Dipartimento per i Trasporti, la Navigazione<br>
+            ed i Sistemi Informativi e Statistici<br>
+            Direzione Generale per la Motorizzazione
+          </span>
+        </div>
+      </div>
+
+      <div class="title-block">
+        <span class="title-scheda" id="lblTitleScheda">SCHEDA</span>
+        <span class="title-esame" id="lblTitleEsame">ESAME</span>
+      </div>
+
+      <div class="facsimile-block">
+        FAC-SIMILE
+      </div>
+
+      <div class="dt-badge">
+        DT
+      </div>
+    </header>
+
+    <!-- Group Tabs: Domande 1-10, 11-20, 21-30 -->
+    <nav class="tabs-bar" id="examTabsBar">
+      <button class="tab-btn active" id="tab0" onclick="switchGroup(0)">Domande 1-10</button>
+      <button class="tab-btn" id="tab1" onclick="switchGroup(1)">Domande 11-20</button>
+      <button class="tab-btn" id="tab2" onclick="switchGroup(2)">Domande 21-30</button>
+    </nav>
+
+    <!-- Question Numbers: 10 Big + 30 Small -->
+    <div class="nav-container">
+      <div class="big-nav-row" id="bigNavRow"></div>
+      <div class="small-nav-row" id="smallNavRow"></div>
+    </div>
+
+    <!-- Main Content: Left Image + Right Question Text & Vero/Falso -->
+    <div class="main-body">
+      <!-- Left: Image box -->
+      <div class="image-card" id="imageCard">
+        <img id="qImage" src="" alt="" style="display:none;">
+      </div>
+
+      <!-- Right: Text & Answer controls -->
+      <div class="right-card">
+        <div class="text-card">
+          <div class="q-number-corner" id="qNumberCorner">1</div>
+          <div class="q-text" id="qText">Caricamento quiz...</div>
+        </div>
+
+        <div class="vf-card">
+          <div class="vf-choice" id="choiceVero" onclick="selectAnswer('V')">
+            <span class="vf-label">Vero</span>
+            <div class="vf-box">
+              <div class="vf-circle-inner">V</div>
+            </div>
+          </div>
+
+          <div class="vf-choice" id="choiceFalso" onclick="selectAnswer('F')">
+            <span class="vf-label">Falso</span>
+            <div class="vf-box">
+              <div class="vf-circle-inner">F</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persian Translation Drawer -->
+    <div class="farsi-drawer-bar">
+      <button class="farsi-btn" onclick="toggleFarsiDrawer()">
+        <span>📖 ترجمه و جدول لغات فارسی (کلیک کنید)</span>
+      </button>
+      <div class="farsi-content-box" id="farsiContentBox"></div>
+    </div>
+
+    <!-- Bottom Bar: Timer, Correggi, Navigation -->
+    <footer class="footer-bar">
+      <div class="timer-box" id="timerBox">
+        Timer&nbsp;&nbsp;20:00
+      </div>
+
+      <div class="correggi-center">
+        <button class="btn-correggi" id="btnCorreggi" onclick="onCorreggiClicked()">
+          Correggi
+        </button>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" title="Riepilogo domande" onclick="openOverview()">
+          <svg viewBox="0 0 24 24">
+            <line x1="8" y1="6" x2="20" y2="6"/>
+            <line x1="8" y1="12" x2="20" y2="12"/>
+            <line x1="8" y1="18" x2="20" y2="18"/>
+            <circle cx="4" cy="6" r="1.5" fill="#536e5b"/>
+            <circle cx="4" cy="12" r="1.5" fill="#536e5b"/>
+            <circle cx="4" cy="18" r="1.5" fill="#536e5b"/>
+          </svg>
+        </button>
+
+        <button class="action-btn circle" title="Precedente" onclick="goPrev()">
+          <svg viewBox="0 0 24 24">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+
+        <button class="action-btn circle" title="Successiva" onclick="goNext()">
+          <svg viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========================================================
+       SECTION 2: CRASH COURSE LESSONS MODULE (۱۵ درس طلایی)
+       ======================================================== -->
+  <section class="lessons-container" id="lessonsModuleSection">
+    <div class="lessons-layout">
+      <!-- Sidebar with 15 lessons list -->
+      <aside class="lessons-sidebar" id="lessonsSidebar">
+        <div class="sidebar-title">فهرست ۱۵ درس فشرده و کنکوری:</div>
+        <div id="lessonsListButtons"></div>
+      </aside>
+
+      <!-- Main Lesson Content View -->
+      <main class="lesson-main-view" id="lessonMainContent"></main>
+    </div>
+  </section>
+
+  <!-- Modal: Exam Result -->
+  <div class="modal-backdrop" id="modalResult">
+    <div class="modal-box">
+      <h2 class="modal-heading">Esito Prova d'Esame</h2>
+      <div class="result-pill" id="resultPill">IDONEO</div>
+      <div class="score-breakdown" id="scoreBreakdown"></div>
+      <div class="modal-buttons">
+        <button class="btn-dialog blue" onclick="openReviewMode()">Rivedi la Scheda</button>
+        <button class="btn-dialog neutral" id="btnRestartQuiz" onclick="startNewExam()">Nuova Scheda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Unanswered Confirmation -->
+  <div class="modal-backdrop" id="modalConfirm">
+    <div class="modal-box">
+      <h2 class="modal-heading">Conferma Correzione</h2>
+      <p id="confirmText" style="font-size:15.5px; margin: 14px 0 22px; line-height: 1.6; color:#333;"></p>
+      <div class="modal-buttons">
+        <button class="btn-dialog blue" onclick="proceedGrading()">Sì, Correggi</button>
+        <button class="btn-dialog neutral" onclick="closeModal('modalConfirm')">Continua Esame</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Overview Grid -->
+  <div class="modal-backdrop" id="modalOverview">
+    <div class="modal-box" style="max-width: 600px;">
+      <h2 class="modal-heading">Riepilogo Risposte</h2>
+      <p style="font-size:13px; color:#555; margin-bottom: 8px;">Fai clic su una domanda per visualizzarla:</p>
+      <div class="overview-matrix" id="overviewMatrix"></div>
+      <div class="modal-buttons" style="margin-top: 14px;">
+        <button class="btn-dialog neutral" onclick="closeModal('modalOverview')">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="questions.js"></script>
+  <script src="lessons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
