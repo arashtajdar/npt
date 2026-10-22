@@ -1,0 +1,13 @@
+{
+  "name": "npt",
+  "compatibility_date": "2026-10-19",
+  "assets": {
+    "directory": "."
+  },
+  "routes": [
+    {
+      "pattern": "npt.arashtajdar.com",
+      "custom_domain": true
+    }
+  ]
+}
